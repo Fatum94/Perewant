@@ -36,7 +36,7 @@ namespace System.Web.Security
             if (FileUpload != null && FileUpload.ContentLength > 0)
             {
                 string fileName = Path.GetFileName(FileUpload.FileName);
-                string path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                string path = HttpContext.Current.Server.MapPath(@"~App_Data/" + fileName);
                 try
                 {
                     FileUpload.SaveAs(path);
