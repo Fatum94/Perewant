@@ -123,7 +123,7 @@ namespace System.Web.Security
         {
             var database = new Database();
             var arr = database.Compressor.ToArray();
-            var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), "history.csv");
+            var path = HttpContext.Server.MapPath("~/App_Data/uploads/history.csv");
             var sw = new StreamWriter(path);
             var j = 0;          
 
