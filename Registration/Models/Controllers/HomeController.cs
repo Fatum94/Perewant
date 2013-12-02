@@ -32,15 +32,11 @@ namespace System.Web.Security
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase FileUpload)
         {
-            DataTable dt = new DataTable();
             if (FileUpload != null && FileUpload.ContentLength > 0)
             {
-                string fileName = Path.GetFileName(FileUpload.FileName);
-                string path = HttpContext.Server.MapPath(@"~App_Data/" + fileName);
                 try
                 {
-                    FileUpload.SaveAs(path);
-                    ProcessCSV(path);
+                    ProcessCSV(FileUpload);
                 }
                 catch (Exception ex)
                 {
@@ -157,10 +153,10 @@ namespace System.Web.Security
             HttpContext.Response.Cookies.Set(AuthCookie);
         }
 
-        private void ProcessCSV(string fileName)
+        private void ProcessCSV(HttpPostedFileBase FileUpload)
         {
             var database = new Database();
-           
+
             //Set up our variables
             string Feedback = string.Empty;
             string line = string.Empty;
@@ -168,17 +164,19 @@ namespace System.Web.Security
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //Set the filename in to our stream
-            var sr = new StreamReader(fileName);
-            while ((line = sr.ReadLine()) != null)
-            {
+            using (var sr = new StreamReader(FileUpload.InputStream))
+                    {
+                        while ((line = sr.ReadLine()) != null)
+                        {
 
-                //add our current value to our data row
-                strArray = r.Split(line);
-                
-                database.Compressor.Add(new Kompressor { PressIn = strArray[0], PressOut = strArray[1], Performance = strArray[2], Rodo = strArray[3] });
-                database.SaveChanges();
-           }
-  
+                            //add our current value to our data row
+                            strArray = r.Split(line);
+
+                            database.Compressor.Add(new Kompressor { PressIn = strArray[0], PressOut = strArray[1], Performance = strArray[2], Rodo = strArray[3] });
+                            database.SaveChanges();
+                        }
+            }
+
         }
     }
 
