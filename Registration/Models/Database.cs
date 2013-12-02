@@ -6,6 +6,10 @@ using System.Data.Entity;
 
 namespace Registration.Models
 {
+    public DataContext()
+      : base("Entities")
+   {
+   }
     public class Database : DbContext
     {
         public DbSet<User> Users { get; set; }
