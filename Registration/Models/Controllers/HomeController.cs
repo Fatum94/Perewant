@@ -39,6 +39,7 @@ namespace System.Web.Security
                 string path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
                 try
                 {
+                    FileUpload.SaveAs(path);
                     ProcessCSV(path);
                 }
                 catch (Exception ex)
