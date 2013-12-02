@@ -6,9 +6,10 @@ using System.Data.Entity;
 
 namespace Registration.Models
 {
-    public Database():base("Entities"){}
+   
     public class Database : DbContext
     {
+        public Database():base("Entities"){}
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
     }
