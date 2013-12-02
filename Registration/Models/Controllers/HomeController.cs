@@ -60,8 +60,15 @@ namespace System.Web.Security
 
         public ActionResult WatchDB(User user)
         {
-            ViewData = getFromTable(user);
-            return RedirectToAction("Index");
+            try
+            {
+                ViewData = getFromTable(user);
+                return RedirectToAction("Index");
+            }
+            catch (InvalidCastException e)
+            {
+                return RedirectToAction("Register");
+            }
         }
 
         public ActionResult Register(User user)
