@@ -8,11 +8,6 @@ namespace Registration.Models
 {
     public class Database : DbContext
     {
-        public Database()
-            : base("MyDB")
-        {
-
-        }
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
     }
