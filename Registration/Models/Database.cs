@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace Registration.Models
 {
-    public DataContext(): base("Entities")
+    public Database(): base("Entities")
    {
    }
     public class Database : DbContext
