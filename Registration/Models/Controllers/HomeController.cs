@@ -43,7 +43,6 @@ namespace System.Web.Security
                     ViewData["Feedback"] = ex.Message;
                 }
             }
-            dt.Dispose();
             return RedirectToAction("Index");
         }
 
