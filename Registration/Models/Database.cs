@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +8,11 @@ namespace Registration.Models
 {
     public class Database : DbContext
     {
-        public Database(): base("MyDB")
-        {        }
-        
+        public Database()
+            : base("MyDB")
+        {
+
+        }
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
     }
@@ -20,5 +22,6 @@ namespace Registration.Models
         protected override void Seed(Database context)
         {
             base.Seed(context);
+        }
     }
 }
