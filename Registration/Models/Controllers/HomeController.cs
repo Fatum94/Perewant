@@ -22,6 +22,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
+            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            {
+                return RedirectToAction("Register");
+            }
 
             return View();
         }
