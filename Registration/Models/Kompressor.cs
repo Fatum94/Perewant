@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,8 +16,15 @@ namespace Registration.Models
         [Required(ErrorMessage = "Please, fill in this area")]
         public string Performance { get; set; }
         [Required(ErrorMessage = "Please, fill in this area")]
-        public string Rodo { get; set; }
+        public string Drive { get; set; }
 
 
+        public string Power { get; set; }
+        public string DegreesOfPressure { get; set;}
+        public string NumberOfCylinders { get; set; }
+        public string Bore { get; set; }
+        public string LengthOfStroke { get; set; }
+        public string SpeedOfRotation { get; set; }
     }
+
 }
