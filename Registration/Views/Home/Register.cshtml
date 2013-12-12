@@ -3,15 +3,54 @@
     ViewBag.Title = "Register";
 }
 <link rel="stylesheet" type="text/css" href= "../../UI/css/main.css" />
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js"></script>
+<script type="text/javascript" src="../../UI/scripts/request.js"></script>
+<link rel="stylesheet" type="text/css" href="../../UI/css/main.css" />
+<link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
 <h2>@ViewData["first_name"]</h2>
-<div class="login">
-@using (Html.BeginForm("WatchDB", "Home"))
-{
-    @Html.LabelFor(m => m.Name);
-    @Html.TextBoxFor(m => m.Name);
-    @Html.LabelFor(m => m.Password);
-    @Html.PasswordFor(m => m.Password);
-    <input type="submit" />
-    <div>@ViewData["Error"]</div>
-}
-</div>
+
+<script type="text/javascript">
+    var form = Ext.create('Ext.form.Panel', {
+        title: 'Please login here',
+        bodyStyle: 'padding: 10px 5px;',
+        width: 300,
+        height: 150,
+        url: 'WatchDB',
+        items: [
+            {
+                xtype: 'textfield',
+                fieldLabel: 'Login',
+                name: 'name',
+                allowBlank: false
+            },
+            {
+                xtype: 'textfield',
+                inputType: 'password',
+                fieldLabel: 'Password',
+                name: 'Password',
+                allowBlank: false
+            }
+        ],
+        buttons: [
+            {
+                id: 'submitBtn',
+                itemId: 'submitBtn',
+                text: 'Submit',
+                handler: function () {
+                    this.up('form').getForm().submit({
+                        failure: function (form, action) {
+                            Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
+                        }
+                    });
+                }
+            }
+        ]
+    });
+        Ext.create('Ext.container.Container', {
+            renderTo: document.body,
+            style: 'padding-top: 40px;',
+            layout: { type: 'hbox', pack: 'center' },
+            items: [form]
+        });
+</script>
