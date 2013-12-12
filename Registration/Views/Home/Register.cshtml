@@ -38,14 +38,34 @@
                 itemId: 'submitBtn',
                 text: 'Submit',
                 handler: function () {
-                    this.up('form').getForm().submit({
-                        failure: function (form, action) {
-                            Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
-                        }
-                    });
+                    var form = this.up('form').getForm();
+                    if (form.isValid()) {
+                        form.submit({
+                            failure: function (form, action) {
+                                Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
+                            }
+                        });
+                    }
+                    else {
+                        Ext.Msg.alert('Error', 'Enter valid data!');
+                    }
                 }
             }
-        ]
+        ],
+        defaults: {
+            listeners: {
+                specialkey: function (field, event) {
+                    if (event.getKey() == event.ENTER) {
+                        if (field.up('form').getForm().isValid()) {
+                            field.up('form').getForm().submit();
+                        }
+                        else {
+                            Ext.Msg.alert('Error', 'Enter valid data!');
+                        }
+                    }
+                }
+            }
+        }
     });
         Ext.create('Ext.container.Container', {
             renderTo: document.body,
@@ -53,4 +73,6 @@
             layout: { type: 'hbox', pack: 'center' },
             items: [form]
         });
+        delete Ext.tip.Tip.prototype.minWidth;
+        Ext.QuickTips.init();
 </script>
