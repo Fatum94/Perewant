@@ -29,6 +29,10 @@ namespace System.Web.Security
 
             return View();
         }
+        public ActionResult History()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase FileUpload)
         {
@@ -45,7 +49,13 @@ namespace System.Web.Security
             }
             return RedirectToAction("Index");
         }
-
+        public ActionResult SelectCompressor(string compressorPress)
+        {
+            var database = new Database();
+            var compressor = database.Compressor.Where(c => c.PressIn == compressorPress);
+            return Json(compressor, JsonRequestBehavior.AllowGet);
+            //return View("Index", compressor);
+        }
         public ActionResult Registration()
         {
             ViewData["Message"] = "Register Here!";
@@ -107,7 +117,7 @@ namespace System.Web.Security
             if (ModelState.IsValid)
             {
                 var database = new Database();
-                database.Compressor.Add(new Kompressor { PressIn = compr.PressIn, PressOut = compr.PressOut, Performance = compr.Performance, Rodo = compr.Rodo });
+                database.Compressor.Add(new Kompressor { PressIn = compr.PressIn, PressOut = compr.PressOut, Performance = compr.Performance, Drive = compr.Drive, Power = compr.Power, DegreesOfPressure = compr.DegreesOfPressure, NumberOfCylinders = compr.NumberOfCylinders, Bore = compr.Bore, LengthOfStroke = compr.LengthOfStroke, SpeedOfRotation = compr.SpeedOfRotation });
                 database.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -118,15 +128,7 @@ namespace System.Web.Security
         {
             var database = new Database();
             var arr = database.Compressor.ToArray();
-            var path = Server.MapPath("~/App_Data/history.csv");
-            var sw = new StreamWriter(path);
-            var j = 0;          
-
-            foreach (var rows in arr) {
-                sw.WriteLine(rows.PressIn + "," + rows.PressOut + "," + rows.Performance + "," + rows.Rodo);
-            }
-            sw.Dispose();
-            return RedirectToAction("Index");
+            return Json(arr, JsonRequestBehavior.AllowGet);
         }
 
         private void CreateCookie(string userName, bool isPersistent = false)
@@ -159,21 +161,22 @@ namespace System.Web.Security
             //Set up our variables
             string Feedback = string.Empty;
             string line = string.Empty;
-            string[] strArray = { "", "", "", "" };
+
+            var strArray = new string[11];
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //Set the filename in to our stream
             using (var sr = new StreamReader(FileUpload.InputStream))
-                    {
-                        while ((line = sr.ReadLine()) != null)
-                        {
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
 
-                            //add our current value to our data row
-                            strArray = r.Split(line);
+                    //add our current value to our data row
+                    strArray = r.Split(line);
 
-                            database.Compressor.Add(new Kompressor { PressIn = strArray[0], PressOut = strArray[1], Performance = strArray[2], Rodo = strArray[3] });
-                            database.SaveChanges();
-                        }
+                    database.Compressor.Add(new Kompressor { PressIn = strArray[0], PressOut = strArray[1], Performance = strArray[2], Drive = strArray[3], Power = strArray[4], DegreesOfPressure = strArray[5], NumberOfCylinders = strArray[6], Bore = strArray[7], LengthOfStroke = strArray[8], SpeedOfRotation = strArray[9]});
+                    database.SaveChanges();
+                }
             }
 
         }
