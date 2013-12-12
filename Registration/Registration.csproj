@@ -135,7 +135,9 @@
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
     <Content Include="Global.asax" />
+    <Content Include="UI\css\ext-all.css" />
     <Content Include="UI\css\main.css" />
+    <Content Include="UI\scripts\request.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -169,6 +171,7 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App_Data\uploads\history.csv" />
+    <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
