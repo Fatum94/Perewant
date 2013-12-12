@@ -42,13 +42,13 @@
                     if (form.isValid()) {
                         form.submit({
                             method: 'POST',
-                            success: Ext.Msg.alert('Status', 'Login Successful!', function(btn, text){
+                            success: Ext.Msg.alert('Status', 'Login Successful!', function (btn, text) {
 
-                                if (btn == 'ok'){
+                                if (btn == 'ok') {
                                     window.location = '/';
                                 }
-                            })
-                },
+                            }),
+
                             failure: function (form, action) {
                                 Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
                             }
@@ -75,12 +75,12 @@
             }
         }
     });
-        Ext.create('Ext.container.Container', {
-            renderTo: document.body,
-            style: 'padding-top: 40px;',
-            layout: { type: 'hbox', pack: 'center' },
-            items: [form]
-        });
-        delete Ext.tip.Tip.prototype.minWidth;
-        Ext.QuickTips.init();
+    Ext.create('Ext.container.Container', {
+        renderTo: document.body,
+        style: 'padding-top: 40px;',
+        layout: { type: 'hbox', pack: 'center' },
+        items: [form]
+    });
+    delete Ext.tip.Tip.prototype.minWidth;
+    Ext.QuickTips.init();
 </script>
