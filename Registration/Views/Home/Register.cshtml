@@ -41,7 +41,14 @@
                     var form = this.up('form').getForm();
                     if (form.isValid()) {
                         form.submit({
-                        success: function(){window.location = '/';},
+                            method: 'POST',
+                            success: Ext.Msg.alert('Status', 'Login Successful!', function(btn, text){
+
+                                if (btn == 'ok'){
+                                    window.location = '/';
+                                }
+                            })
+                },
                             failure: function (form, action) {
                                 Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
                             }
