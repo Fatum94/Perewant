@@ -43,7 +43,7 @@
                         form.submit({
                             method: 'POST',
                             success: Ext.Msg.alert('Status', 'Login Successful!', function (response) {
-                                var jsonData = Ext.util.JSON.decode(response.responseText);
+                                var jsonData = JSON.parse(response.responseText);
                                 if (jsonData.url) {
                                     window.location = '/';
                                 }
