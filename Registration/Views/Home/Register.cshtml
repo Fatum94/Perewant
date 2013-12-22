@@ -42,12 +42,12 @@
                     if (form.isValid()) {
                         form.submit({
                             method: 'POST',
-                            success: Ext.Msg.alert('Status', 'Login Successful!', function (response) {
+                            success: function (response) {
                                 var jsonData = JSON.parse(response.responseText);
                                 if (jsonData.url) {
                                     window.location = '/';
-                                }
-                            }),
+                                } 
+                            },
 
                             failure: function (form, action) {
                                 Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
