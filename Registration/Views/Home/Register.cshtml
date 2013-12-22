@@ -42,9 +42,9 @@
                     if (form.isValid()) {
                         form.submit({
                             method: 'POST',
-                            success: Ext.Msg.alert('Status', 'Login Successful!', function (btn, text) {
-
-                                if (btn == 'ok') {
+                            success: Ext.Msg.alert('Status', 'Login Successful!', function (response) {
+                                var jsonData = Ext.util.JSON.decode(response.responseText);
+                                if (jsonData.url) {
                                     window.location = '/';
                                 }
                             }),
