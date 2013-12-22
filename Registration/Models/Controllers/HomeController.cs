@@ -68,7 +68,8 @@ namespace System.Web.Security
             try
             {
                 ViewData = getFromTable(user);
-                return RedirectToAction("Index");
+                var jsonResult = "{'url' : '/'}";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
             }
             catch (InvalidCastException e)
             {
