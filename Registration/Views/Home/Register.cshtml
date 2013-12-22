@@ -13,6 +13,8 @@
 @using (Html.BeginForm("WatchDB", "Home"))
     {
         @Html.LabelFor(u => u.Name)
+        @Html.TextBoxFor(u => u.Name)
+        @Html.LabelFor(u => u.Password)
         @Html.TextBoxFor(u => u.Password)
         <input type="submit" />
     }
