@@ -10,77 +10,9 @@
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
 <h2>@ViewData["first_name"]</h2>
 
-<script type="text/javascript">
-    var form = Ext.create('Ext.form.Panel', {
-        title: 'Please login here',
-        bodyStyle: 'padding: 10px 5px;',
-        width: 300,
-        height: 150,
-        url: 'WatchDB',
-        items: [
-            {
-                xtype: 'textfield',
-                fieldLabel: 'Login',
-                name: 'name',
-                allowBlank: false
-            },
-            {
-                xtype: 'textfield',
-                inputType: 'password',
-                fieldLabel: 'Password',
-                name: 'Password',
-                allowBlank: false
-            }
-        ],
-        buttons: [
-            {
-                id: 'submitBtn',
-                itemId: 'submitBtn',
-                text: 'Submit',
-                handler: function () {
-                    var form = this.up('form').getForm();
-                    if (form.isValid()) {
-                        form.submit({
-                            method: 'POST',
-                            success: function (response) {
-                                var jsonData = JSON.parse(response.responseText);
-                                if (jsonData.url) {
-                                    window.location = '/';
-                                } 
-                            },
-
-                            failure: function (form, action) {
-                                Ext.Msg.alert('Failed', action.result ? action.result.message : 'No response');
-                            }
-                        });
-                    }
-                    else {
-                        Ext.Msg.alert('Error', 'Enter valid data!');
-                    }
-                }
-            }
-        ],
-        defaults: {
-            listeners: {
-                specialkey: function (field, event) {
-                    if (event.getKey() == event.ENTER) {
-                        if (field.up('form').getForm().isValid()) {
-                            field.up('form').getForm().submit();
-                        }
-                        else {
-                            Ext.Msg.alert('Error', 'Enter valid data!');
-                        }
-                    }
-                }
-            }
-        }
-    });
-    Ext.create('Ext.container.Container', {
-        renderTo: document.body,
-        style: 'padding-top: 40px;',
-        layout: { type: 'hbox', pack: 'center' },
-        items: [form]
-    });
-    delete Ext.tip.Tip.prototype.minWidth;
-    Ext.QuickTips.init();
-</script>
+@using (Html.BeginForm("WatchDB", "Home"))
+    {
+        @Html.LabelFor(u => u.Name)
+        @Html.TextBoxFor(u => u.Password)
+        <input type="submit" />
+    }
