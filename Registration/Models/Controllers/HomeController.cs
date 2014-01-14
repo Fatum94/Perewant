@@ -22,10 +22,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            /*if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
             {
                 return RedirectToAction("Register");
-            }
+            }*/
 
             return View();
         }
@@ -112,15 +112,16 @@ namespace System.Web.Security
             return null;
         }
 
-        public ActionResult InsertCompressorCharacter(Kompressor compr)
+        public ActionResult InsertCompressorCharacter(ViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var database = new Database();
-                database.Compressor.Add(new Kompressor { PressIn = compr.PressIn, PressOut = compr.PressOut, Performance = compr.Performance, Drive = compr.Drive, Power = compr.Power, DegreesOfPressure = compr.DegreesOfPressure, NumberOfCylinders = compr.NumberOfCylinders, Bore = compr.Bore, LengthOfStroke = compr.LengthOfStroke, SpeedOfRotation = compr.SpeedOfRotation });
+                var ijcm = model.First.PressIn;
+                //database.Compressor.Add(new Kompressor { PressIn = compr.PressIn, PressOut = compr.PressOut, Performance = compr.Performance, Drive = compr.Drive, Power = compr.Power, DegreesOfPressure = compr.DegreesOfPressure, NumberOfCylinders = compr.NumberOfCylinders, Bore = compr.Bore, LengthOfStroke = compr.LengthOfStroke, SpeedOfRotation = compr.SpeedOfRotation });
+                
                 database.SaveChanges();
                 return RedirectToAction("Index");
-            }
+            
             return View("Index");
         }
 

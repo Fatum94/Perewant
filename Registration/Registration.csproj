@@ -116,10 +116,12 @@
     </Compile>
     <Compile Include="Models\Database.cs" />
     <Compile Include="Models\Kompressor.cs" />
+    <Compile Include="Models\Sverdlovuna.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\users.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

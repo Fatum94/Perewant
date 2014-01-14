@@ -1,4 +1,8 @@
-﻿#form-wrapp{
+﻿div
+{
+    display: inline-block;
+}
+#form-wrapp{
 width: 700px;
 margin: 0 auto;
 background: #6699CC;
@@ -34,10 +38,15 @@ height: 30px;
 display: inline-block;
 width: 40px;
 }
-#form-wrapp input[type='text']
+#form-wrapp input[type='text'], #form-wrapp select
 {
 display: block;
 }
+#form-wrapp select
+{
+    margin: 20px;
+}
+
 #form-wrapp input[type='submit']
 {
 margin-top: 0;
@@ -175,3 +184,14 @@ margin-bottom: 20px;
 {
     border: 0;
     }
+.right-column, .left-column
+{
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+}
+
+.selectCompr { width: 20%; }
+.uploadFile { width: 70%; }
+.clearfix { clear:both; }
+a#showHistory { display: inline-block; margin: 20px; }

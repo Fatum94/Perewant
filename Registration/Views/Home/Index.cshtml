@@ -1,4 +1,4 @@
-﻿@model Registration.Models.Kompressor
+﻿@model Registration.Models.ViewModel
 
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js"></script>
@@ -14,32 +14,45 @@
         <input type="submit" value="logout" class="logout" />
     }
     @using (Html.BeginForm("InsertCompressorCharacter", "Home"))
-    {
-        @Html.LabelFor(m => m.PressIn)
-        @Html.TextBoxFor(m => m.PressIn)
-        @Html.ValidationMessageFor(m => m.PressIn)
-        @Html.LabelFor(m => m.Performance)
-        @Html.TextBoxFor(m => m.Performance)
-        @Html.LabelFor(m => m.PressOut)
-        @Html.TextBoxFor(m => m.PressOut)
-        @Html.LabelFor(m => m.Drive)
-        @Html.TextBoxFor(m => m.Drive)
+    {   
+        <div class='left-column'>
+            @Html.LabelFor(m => m.First.PressIn)
+            @Html.TextBoxFor(m => m.First.PressIn)
+            @Html.LabelFor(m => m.First.PressOut)
+            @Html.TextBoxFor(m => m.First.PressOut)
+            @Html.LabelFor(m => m.First.Performance)
+            @Html.TextBoxFor(m => m.First.Performance)
+        </div>
+        <div class='right-column'>
+            @Html.LabelFor(m => m.Second.ChooseRodo)
+            <select id='Second_ChooseRodo' name='Second.ChooseRodo'>
+                <option>First Rodo</option>
+                <option>Second Rodo</option>
+            </select>
+            @Html.RadioButtonFor(m=>m.Second.BushSverd, true)
+            @Html.LabelFor(m => m.Second.BushSverd)
+            @Html.RadioButtonFor(m => m.Second.BushSverd, false)
+        </div>
         <input type="submit" />
     }
+    <div class='uploadFile'>
     @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     { 
-
+        
         <input type="file" name="FileUpload" />
         <input type="submit" name="Submit" id="Submit" value="Upload" />
-
+      
     }
+    </div>
+
     <div class="selectCompr">
         @using (Html.BeginForm("SelectCompressor", "Home"))
         { 
-            @Html.TextBoxFor(c => c.PressIn)
+            @Html.TextBoxFor(c => c.First.PressIn)
         }
     </div>
-    <a href="/Home/History">Download History</a>
+    <div class="clearfix"></div>
+    <a href="/Home/History" id='showHistory'>Download History</a>
     <div id="response">
     </div>
 </div>

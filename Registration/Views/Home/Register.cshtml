@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="../../UI/css/main.css" />
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
 <h2>@ViewData["first_name"]</h2>
-
+<div class="login">
 @using (Html.BeginForm("WatchDB", "Home"))
     {
         @Html.LabelFor(u => u.Name)
@@ -18,3 +18,4 @@
         @Html.TextBoxFor(u => u.Password)
         <input type="submit" />
     }
+</div>
