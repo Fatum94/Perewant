@@ -68,7 +68,7 @@ namespace System.Web.Security
             var model = new User();
             return View("Registration", model);
         }
-
+        [HttpPost]
         public ActionResult WatchDB(User user)
         {
             try
