@@ -5,7 +5,7 @@
 <script type="text/javascript" src="../../UI/scripts/request.js"></script>
 <link rel="stylesheet" type="text/css" href="../../UI/css/main.css" />
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
-<div id="form-wrapp">
+@*<div id="form-wrapp">
     <div class="menu">
         <span class='input active'>Введення даних</span> <span class='output'>Отримані результати</span>
     </div>
@@ -135,4 +135,107 @@
                      }  
                     });
         });
+</script>*@
+<script>
+    Ext.application({
+        name: 'MyApp',
+        launch: function () {
+            Ext.create('Ext.tab.Panel', {
+                fullscreen: true,
+                tabBarPosition: 'bottom',
+                renderTo: Ext.getBody(),
+                defaults: {
+                    styleHtmlContent: true
+                },
+
+                items: [{
+                    title: 'Введення даних',
+                    items: [
+                        {
+                            xtype: 'button',
+                            margin: '20',
+                            text: 'Переглянути історію'
+                        },
+                        {
+                            xtype: 'form',
+                            padding: '10',
+                            items: [{
+                                xtype: 'textfield',
+                                fieldLabel: 'Тиск на вході',
+                                name: 'first.pressIn'
+                            }, {
+                                xtype: 'textfield',
+                                fieldLabel: 'Тиск на виході',
+                                name: 'first.pressOut'
+                            }, {
+                                xtype: 'textfield',
+                                fieldLabel: 'Enter smth',
+                                name: 'first.power'
+                            }, {
+                                xtype: 'textfield',
+                                fieldLabel: 'Enter smth',
+                                name: 'first.performance'
+                            }, {
+                                xtype: 'combo',
+                                displayField: 'name',
+                                name: 'second.chooseRodo',
+                                fieldLabel: 'Виберіть родовище',
+                                store: Ext.create('Ext.data.Store', {
+                                    fields: ['value', 'name'],
+                                    data: [{ value: 1, name: 'First' }, { value: 1, name: 'First'}]
+                                })
+                            }, {
+                                xtype: 'container',
+                                width: 200,
+                                fieldLabel: 'Size',
+                                defaultType: 'radiofield',
+                                defaults: {
+                                    flex: 1
+                                },
+                                layout: 'hbox',
+                                items: [
+                                    {
+                                        boxLabel: 'Кущ',
+                                        name: 'second.bushSverd',
+                                        inputValue: 'kusch',
+                                        id: 'radio1'
+                                    }, {
+                                        boxLabel: 'Свердловина',
+                                        name: 'second.bushSverd',
+                                        inputValue: 'sver',
+                                        id: 'radio2'
+                                    }
+                                ],
+                             
+                            }],
+                            buttons: [
+                                { text: 'Submit', handler: function(){this.up('form').submit({
+                                    method: 'POST',
+                                    url: '/Home/ConvertDataToCSV',
+                                    success: function(){
+                                        Ext.getCmp("resultPanel").add({
+                                xtype: 'combo',
+                                displayField: 'name',
+                                name: 'second.chooseRodo',
+                                fieldLabel: 'Виберіть родовище',
+                                store: Ext.create('Ext.data.Store', {
+                                    fields: ['value', 'name'],
+                                    data: [{ value: 1, name: 'First' }, { value: 1, name: 'First'}]
+                                })
+                            });
+                                    }
+                                })} },
+                                { text: 'Cancel' },
+                            ]
+                           
+                        }]
+                }, {
+                    title: 'Результат',
+                    id: 'resultPanel',
+                    iconCls: 'user',
+                    html: 'Here will be some results'
+                }]
+            });
+        } // launch
+    });     // application()
 </script>

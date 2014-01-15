@@ -11,7 +11,13 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Text;
 using System.Security;
-
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Web.Script.Serialization;
 
 namespace System.Web.Security
 {
@@ -124,11 +130,10 @@ namespace System.Web.Security
             
             return View("Index");
         }
-
-        public ActionResult ConvertDataToCSV()
+        [HttpPost]
+        public ActionResult ConvertDataToCSV(ViewModel model)
         {
-            var database = new Database();
-            var arr = database.Compressor.ToArray();
+            var arr = new JavaScriptSerializer().Serialize(new { success = true }); 
             return Json(arr, JsonRequestBehavior.AllowGet);
         }
 
