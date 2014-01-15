@@ -8,14 +8,34 @@
 <script type="text/javascript" src="../../UI/scripts/request.js"></script>
 <link rel="stylesheet" type="text/css" href="../../UI/css/main.css" />
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
-<h2>@ViewData["first_name"]</h2>
-<div class="login">
-@using (Html.BeginForm("WatchDB", "Home"))
-    {
-        @Html.LabelFor(u => u.Name)
-        @Html.TextBoxFor(u => u.Name)
-        @Html.LabelFor(u => u.Password)
-        @Html.TextBoxFor(u => u.Password)
-        <input type="submit" />
-    }
-</div>
+<body>
+    <script type="text/javascript">
+        Ext.create('Ext.form.Panel', {
+            width: 300,
+            height: 100,
+            defaultType: 'textfield',
+            items: [
+                {
+                    name: 'Name',
+                    fieldLabel: 'Name'
+                }, {
+                    name: 'password',
+                    inputType: 'password',
+                    fieldLabel: 'Password'
+                }
+            ],
+            buttons: [
+                { text: 'Login', handler: function () {
+                    var form = this.up('form').getForm();
+                    form.submit({
+                        method: 'POST',
+                        url: '/Home/WatchDB'
+                    });
+                }
+                },
+                { text: 'Cancel', handler: function () { this.up('form').getForm().reset(); } }
+            ],
+            renderTo: Ext.getBody()
+        });
+    </script>
+</body>

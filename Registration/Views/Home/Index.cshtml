@@ -144,10 +144,6 @@
                 fullscreen: true,
                 tabBarPosition: 'bottom',
                 renderTo: Ext.getBody(),
-                defaults: {
-                    styleHtmlContent: true
-                },
-
                 items: [{
                     title: 'Введення даних',
                     items: [
@@ -211,18 +207,18 @@
                             buttons: [
                                 { text: 'Submit', handler: function(){this.up('form').submit({
                                     method: 'POST',
-                                    url: '/Home/ConvertDataToCSV',
+                                    url: '/Home/SelectCompressor',
                                     success: function(){
                                         Ext.getCmp("resultPanel").add({
-                                xtype: 'combo',
-                                displayField: 'name',
-                                name: 'second.chooseRodo',
-                                fieldLabel: 'Виберіть родовище',
-                                store: Ext.create('Ext.data.Store', {
-                                    fields: ['value', 'name'],
-                                    data: [{ value: 1, name: 'First' }, { value: 1, name: 'First'}]
-                                })
-                            });
+                                            xtype: 'combo',
+                                            displayField: 'name',
+                                            name: 'second.chooseRodo',
+                                            fieldLabel: 'Виберіть родовище',
+                                            store: Ext.create('Ext.data.Store', {
+                                                fields: ['value', 'name'],
+                                                data: [{ value: 1, name: 'First' }, { value: 1, name: 'First'}]
+                                            })
+                                        });
                                     }
                                 })} },
                                 { text: 'Cancel' },

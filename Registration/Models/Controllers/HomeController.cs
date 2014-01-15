@@ -28,10 +28,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            /*if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
             {
                 return RedirectToAction("Register");
-            }*/
+            }
 
             return View();
         }
@@ -118,47 +118,12 @@ namespace System.Web.Security
             return null;
         }
 
-        public ActionResult InsertCompressorCharacter(ViewModel model)
-        {
-            
-                var database = new Database();
-                var ijcm = model.First.PressIn;
-                //database.Compressor.Add(new Kompressor { PressIn = compr.PressIn, PressOut = compr.PressOut, Performance = compr.Performance, Drive = compr.Drive, Power = compr.Power, DegreesOfPressure = compr.DegreesOfPressure, NumberOfCylinders = compr.NumberOfCylinders, Bore = compr.Bore, LengthOfStroke = compr.LengthOfStroke, SpeedOfRotation = compr.SpeedOfRotation });
-                
-                database.SaveChanges();
-                return RedirectToAction("Index");
-            
-            return View("Index");
-        }
         [HttpPost]
         public ActionResult ConvertDataToCSV(ViewModel model)
         {
-            var arr = new JavaScriptSerializer().Serialize(new { success = true }); 
-            return Json(arr, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
 
-        private void CreateCookie(string userName, bool isPersistent = false)
-        {
-            var ticket = new FormsAuthenticationTicket(
-                  1,
-                  userName,
-                  DateTime.Now,
-                  DateTime.Now.Add(FormsAuthentication.Timeout),
-                  isPersistent,
-                  string.Empty,
-                  FormsAuthentication.FormsCookiePath);
-
-            // Encrypt the ticket.
-            var encTicket = FormsAuthentication.Encrypt(ticket);
-
-            // Create the cookie.
-            var AuthCookie = new HttpCookie("auth_test")
-            {
-                Value = encTicket,
-                Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
-            };
-            HttpContext.Response.Cookies.Set(AuthCookie);
-        }
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)
         {
