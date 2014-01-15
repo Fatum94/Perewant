@@ -73,8 +73,25 @@ namespace System.Web.Security
         {
             try
             {
-                ViewData = getFromTable(user);
-                return RedirectToAction("Index");
+                var database = new Database();
+                var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
+                if (userLine.Password == user.Password)
+                {
+                    var hash = Convert.ToBase64String(
+                          System.Security.Cryptography.MD5.Create()
+                          .ComputeHash(Encoding.UTF8.GetBytes(userLine.Password))
+                        );
+
+
+                    var AuthCookie = new HttpCookie("auth_test")
+                    {
+                        Value = hash,
+                        Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
+                    };
+                    user.isAuth = true;
+                    HttpContext.Response.Cookies.Set(AuthCookie);
+                }
+                return Json(new { success = true });
             }
             catch (InvalidCastException e)
             {
@@ -96,24 +113,7 @@ namespace System.Web.Security
 
         public ViewDataDictionary getFromTable(User user)
         {
-            var database = new Database();
-            var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
-            if (userLine.Password == user.Password)
-            {
-                var hash = Convert.ToBase64String(
-                      System.Security.Cryptography.MD5.Create()
-                      .ComputeHash(Encoding.UTF8.GetBytes(userLine.Password))
-                    );
-
-
-                var AuthCookie = new HttpCookie("auth_test")
-                {
-                    Value = hash,
-                    Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
-                };
-                user.isAuth = true;
-                HttpContext.Response.Cookies.Set(AuthCookie);
-            }
+            
 
             return null;
         }

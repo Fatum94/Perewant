@@ -27,9 +27,16 @@
             buttons: [
                 { text: 'Login', handler: function () {
                     var form = this.up('form').getForm();
+                    Ext.getBody().mask('Please wait...');
                     form.submit({
                         method: 'POST',
-                        url: '/Home/WatchDB'
+                        url: '/Home/WatchDB',
+                        success: function () {
+                            Ext.getBody().unmask();
+                        },
+                        failure: function(response) {
+                            console.log(response);
+                        }
                     });
                 }
                 },
