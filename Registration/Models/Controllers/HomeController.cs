@@ -28,10 +28,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
-            {
-                return RedirectToAction("Register");
-            }
+            //if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            //{
+            //    return RedirectToAction("Register");
+            //}
 
             return View();
         }
@@ -55,12 +55,11 @@ namespace System.Web.Security
             }
             return RedirectToAction("Index");
         }
-        public ActionResult SelectCompressor(string compressorPress)
+        public ActionResult SelectCompressor(ViewModel model)
         {
             var database = new Database();
-            var compressor = database.Compressor.Where(c => c.PressIn == compressorPress);
-            return Json(compressor, JsonRequestBehavior.AllowGet);
-            //return View("Index", compressor);
+            var compressor = database.Compressor.Where(c => c.PressIn == model.First.PressIn);
+            return Json(new {resp = compressor, success = true}, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Registration()
         {
@@ -97,6 +96,7 @@ namespace System.Web.Security
             {
                 return RedirectToAction("Register");
             }
+            return Json(new { success = true });
         }
 
         public ActionResult Register(User user)

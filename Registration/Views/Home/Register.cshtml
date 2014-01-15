@@ -6,8 +6,8 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.2.0-gpl/ext-all.js"></script>
 <script type="text/javascript" src="../../UI/scripts/request.js"></script>
-<link rel="stylesheet" type="text/css" href="../../UI/css/main.css" />
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
+<link rel="stylesheet" type="text/css" href="../../UI/css/ext-all-gray.css">
 <body>
     <script type="text/javascript">
         Ext.create('Ext.form.Panel', {
@@ -35,7 +35,7 @@
                             Ext.getBody().unmask();
                         },
                         failure: function(response) {
-                            console.log(response);
+                            Ext.getBody().unmask();
                         }
                     });
                 }
