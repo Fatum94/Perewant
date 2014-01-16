@@ -9,7 +9,7 @@ namespace Registration.Models
    
     public class Database : DbContext
     {
-        public Database() : base("Entities") { }
+        public Database() : base("Database") { }
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
     }
