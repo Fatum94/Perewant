@@ -7,16 +7,16 @@ using System.Data.Entity;
 namespace Registration.Models
 {
 
-    public class Entities : DbContext
+    public class Database : DbContext
     {
-        public Entities() : base("Entities") { }
+        public Database() : base("Database") { }
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
     }
 
-    public class DbInit : DropCreateDatabaseIfModelChanges<Entities>
+    public class DbInit : DropCreateDatabaseIfModelChanges<Database>
     {
-        protected override void Seed(Entities context)
+        protected override void Seed(Database context)
         {
             base.Seed(context);
         }

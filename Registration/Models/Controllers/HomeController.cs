@@ -50,14 +50,14 @@ namespace System.Web.Security
                 }
                 catch (Exception ex)
                 {
-                    ViewData["Feeedback"] = ex.Message;
+                    ViewData["Feedback"] = ex.Message;
                 }
             }
             return RedirectToAction("Index");
         }
         public ActionResult SelectCompressor(ViewModel model)
         {
-            var database = new Entities();
+            var database = new Database();
             var compressor = database.Compressor.Where(c => c.PressIn == model.First.PressIn);
             return Json(new {resp = compressor, success = true}, JsonRequestBehavior.AllowGet);
         }
@@ -72,7 +72,7 @@ namespace System.Web.Security
         {
             try
             {
-                var database = new Entities();
+                var database = new Database();
                 var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
                 if (userLine.Password == user.Password)
                 {
@@ -127,7 +127,7 @@ namespace System.Web.Security
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)
         {
-            var database = new Entities();
+            var database = new Database();
 
             //Set up our variables
             string Feedback = string.Empty;
