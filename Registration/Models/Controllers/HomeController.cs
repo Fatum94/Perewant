@@ -57,7 +57,7 @@ namespace System.Web.Security
         }
         public ActionResult SelectCompressor(ViewModel model)
         {
-            var database = new Database();
+            var database = new Entities();
             var compressor = database.Compressor.Where(c => c.PressIn == model.First.PressIn);
             return Json(new {resp = compressor, success = true}, JsonRequestBehavior.AllowGet);
         }
@@ -72,7 +72,7 @@ namespace System.Web.Security
         {
             try
             {
-                var database = new Database();
+                var database = new Entities();
                 var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
                 if (userLine.Password == user.Password)
                 {
@@ -127,7 +127,7 @@ namespace System.Web.Security
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)
         {
-            var database = new Database();
+            var database = new Entities();
 
             //Set up our variables
             string Feedback = string.Empty;
