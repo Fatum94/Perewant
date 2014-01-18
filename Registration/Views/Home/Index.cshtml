@@ -21,10 +21,19 @@
             }],
             buttons: [{
                 text: 'Завантажити',
-                handler: function() {
+                handler: function(btn) {
                     this.up('form').getForm().submit({
                         url: 'Home/Upload',
-                        method: 'POST'
+                        waitMsg: 'Uploading...',
+                        method: 'POST',
+                        success: function() {
+                            var window = btn.up('window');
+                            Ext.Msg.alert('Success', 'File uploaded successful', function(btn) {
+                                if(btn == "ok") {
+                                    window.close();
+                                }
+                            });
+                        }
                     });
                 }
             }]

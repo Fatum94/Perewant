@@ -52,10 +52,10 @@ namespace System.Web.Security
                 }
                 catch (Exception ex)
                 {
-                    ViewData["Feedback"] = ex.Message;
+                    return Json(ex.Message, JsonRequestBehavior.AllowGet);
                 }
             }
-            return RedirectToAction("Index");
+            return Json(new {success = true });
         }
         public ActionResult SelectCompressor(ViewModel model)
         {
