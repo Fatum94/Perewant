@@ -5,22 +5,21 @@ function request(url,renderToBlock,data){
         data: data,
         url: url,
         type: "GET",
-        success: function (result) {
+        success: function (response) {
             var store = Ext.create('Ext.data.Store', {
 
                 storeId: 'simpsonsStore',
                 fields: ['PressIn', 'PressOut', 'Performance', 'Drive', 'Power', 'DegreesOfPressure', 'NumberOfCylinders', 'Bore', 'LengthOfStroke', 'SpeedOfRotation'],
-                data: { 'items': result },
+                data: response.result,
                 proxy: {
-                    type: 'memory',
+                    type: 'ajax',
                     reader: {
-                        type: 'json',
-                        root: 'items'
+                        type: 'json'
                     }
                 }
             });
             Ext.create('Ext.grid.Panel', {
-                store: Ext.data.StoreManager.lookup('simpsonsStore'),
+                store: store,
                 renderTo: Ext.getBody(),
                 viewConfig: {
                     plugins: {

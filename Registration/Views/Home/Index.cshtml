@@ -5,142 +5,36 @@
 <script type="text/javascript" src="../../UI/scripts/request.js"></script>
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all.css">
 <link rel="stylesheet" type="text/css" href="../../UI/css/ext-all-gray.css">
-@*<div id="form-wrapp">
-    <div class="menu">
-        <span class='input active'>Введення даних</span> <span class='output'>Отримані результати</span>
-    </div>
-    @using (Html.BeginForm("LogOut", "Home"))
-    { 
-        <input type="submit" value="logout" class="logout" />
-    }
-    @using (Html.BeginForm("InsertCompressorCharacter", "Home"))
-    {   
-        <div class='left-column'>
-            @Html.LabelFor(m => m.First.PressIn)
-            @Html.TextBoxFor(m => m.First.PressIn)
-            @Html.LabelFor(m => m.First.PressOut)
-            @Html.TextBoxFor(m => m.First.PressOut)
-            @Html.LabelFor(m => m.First.Performance)
-            @Html.TextBoxFor(m => m.First.Performance)
-        </div>
-        <div class='right-column'>
-            @Html.LabelFor(m => m.Second.ChooseRodo)
-            <select id='Second_ChooseRodo' name='Second.ChooseRodo'>
-                <option>First Rodo</option>
-                <option>Second Rodo</option>
-            </select>
-            @Html.RadioButtonFor(m=>m.Second.BushSverd, true)
-            @Html.LabelFor(m => m.Second.BushSverd)
-            @Html.RadioButtonFor(m => m.Second.BushSverd, false)
-        </div>
-        <input type="submit" />
-    }
-    <div class='uploadFile'>
-    @using (Html.BeginForm("Upload", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    { 
-        
-        <input type="file" name="FileUpload" />
-        <input type="submit" name="Submit" id="Submit" value="Upload" />
-      
-    }
-    </div>
-
-    <div class="selectCompr">
-        @using (Html.BeginForm("SelectCompressor", "Home"))
-        { 
-            @Html.TextBoxFor(c => c.First.PressIn)
-        }
-    </div>
-    <div class="clearfix"></div>
-    <a href="/Home/History" id='showHistory'>Download History</a>
-    <div id="response">
-    </div>
-</div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.output').click(function () {
-            $('#form-wrapp form').hide();
-            $('#response').show();
-            $('.output').addClass("active");
-            $('.input').removeClass("active");
-
-        });
-        $('.input').click(function () {
-            $('#form-wrapp form').show();
-            $('#response').hide();
-            $('.input').addClass("active");
-            $('.output').removeClass("active");
-        });
-    });
-    $('.selectCompr form').submit(function (event) {
-        event.preventDefault();
-        @{var baseUrl = @Url.Action("SelectCompressor", "Home");}
-         var data = $(".selectCompr form input:first").val();
-         $('#form-wrapp form').hide();
-            $('#response').empty();
-            $('#response').show();
-
-            $('.output').addClass("active");
-            $('.input').removeClass("active");
-            var response = document.getElementById("response");
-            //request('@baseUrl?compressorPress='+data, response ,data);
-            $.ajax({
-                data: data,
-                url: '@baseUrl?compressorPress='+data,
-                type: "GET",
-                success: function (result) {
-                var dataItems = new Array();
-                for (var i = 0; i< result.length; i++){
-                            dataItems[i] = {
-                            html : result[i].PressOut , 
-                            width:'100%',
-                            height: 200,
-                            layout: {
-                                type: 'hbox'
-                            },
-                            bodyStyle: {lineHeight: '160px'},
-                            items:[{html:'Type of the compressor', height:180, width: 180,style: { color: '#000',backgroundColor:'#BBB',borderRadius: 20,textAlign: 'center', border: '15px solid #6699CC', margin: 5}, bodyStyle: {background: '#BBB', lineHeight: '120px'}}], 
-                            defaultMargins: 10, 
-                            flex: 1, 
-                            split: true,
-                            style: { color: '#000',backgroundColor:'#FFF',borderRadius: 20,textAlign: 'center', border: '5px solid', margin: 5},
-                            
-                            
-                        };
-                    }
-                        Ext.create('Ext.panel.Panel', {
-                        renderTo : response,
-                        layout: 'vbox',
-                        
-                        listeners: {
-                            afterrender: function(component){
-                                Ext.each(component, function(item){
-                                    item = Ext.get(item.id);
-                                    item.on('click',function(){this.flex = 2;});
-                                });
-                            }
-                        },
-                        componentCls: 'boxes',
-                        style:{
-                            border: 0
-                        },
-                        bodyStyle: {
-                            background: '#6699CC',
-                            padding: '10px'
-                        },
-                        items:dataItems
-
-                      });
-                      
-                     }  
-                    });
-        });
-</script>*@
 <script>
+    var uploadWindow = Ext.create('Ext.window.Window', {
+        title: 'Upload file to database',
+        height: 300,
+        width: 300,
+        renderTo: Ext.getBody(),
+        modal: true,
+        items: [{
+            xtype: 'form',
+            items: [{
+                xtype: 'filefield',
+                fieldLabel: 'Виберіть файл..',
+                name: 'file'
+            }],
+            buttons: [{
+                text: 'Завантажити',
+                handler: function() {
+                    this.up('form').getForm().submit({
+                        url: 'Home/Upload',
+                        method: 'POST'
+                    });
+                }
+            }]
+        }]
+    }); 
     Ext.application({
         name: 'MyApp',
         launch: function () {
             Ext.create('Ext.tab.Panel', {
+                id: 'tabpanel',
                 style: 'margin:100px auto; ',
                 width: 600,
                 tabBarPosition: 'bottom',
@@ -155,6 +49,13 @@
                             handler: function () {
                                 location.href = "/Home/History"
                             }
+                        }, {
+                            xtype: 'button',
+                            margin: '20',
+                            text: 'Завантажити дані з файлу',
+                            handler: function () {
+                                uploadWindow.show();
+                            }
                         },
                         {
                             xtype: 'form',
@@ -164,6 +65,9 @@
                             {
                                 xtype: 'container',
                                 margin: '20',
+                                defaults: {
+                                    allowBlank: false
+                                },
                                 items: [
                                     {
                                         xtype: 'textfield',
@@ -186,6 +90,9 @@
                             }, {
                                 xtype: 'container',
                                 margin: '20',
+                                defaults: {
+                                    allowBlank: false
+                                },
                                 items: [
 	                                    {
 	                                        xtype: 'textfield',
@@ -233,29 +140,44 @@
                             ],
                             buttons: [
                                 { text: 'Submit', handler: function (btn) {
-                                    Ext.getBody().mask('Please wait...');
-                                    this.up('form').submit({
-                                        method: 'POST',
-                                        url: '/Home/SelectCompressor',
-                                        success: function (response, form, btn) {
-                                            Ext.getBody().unmask();
-                                            Ext.getCmp("resultPanel").removeAll(true);
-                                            Ext.getCmp("resultPanel").add({
-                                                xtype: 'combo',
-                                                displayField: 'name',
-                                                name: 'second.chooseRodo',
-                                                fieldLabel: 'Виберіть родовище',
-                                                store: Ext.create('Ext.data.Store', {
-                                                    fields: ['value', 'name'],
-                                                    data: [{ value: 1, name: 'First' }, { value: 1, name: 'First'}]
-                                                })
-                                            });
-                                        }
-                                    });
-                                    btn.up('tabpanel').setActiveTab(1);
+                                    var form = this.up('form');
+                                    if(form.isValid()){
+                                        Ext.getBody().mask('Please wait...');
+                                        form.submit({
+                                            method: 'POST',
+                                            url: '/Home/SelectCompressor',
+                                            success: function (response, res, btn) {
+                                                Ext.getCmp('tabpanel').setActiveTab(1);
+                                                Ext.getCmp("resultPanel").removeAll(true);
+                                                var dataItems = new Array();
+                                                for (var i = 0; i< res.result.resp.length; i++){
+                                                            dataItems[i] = {
+                                                            html : res.result.resp[i].PressOut , 
+                                                            width: 580,
+                                                            height: 200,
+                                                            layout: {
+                                                                type: 'hbox'
+                                                            },
+                                                            bodyStyle: {lineHeight: '160px'},
+                                                            items:[{xtype: 'panel', html:'Type of the compressor', height:180, width: 180,style: { color: '#000',backgroundColor:'#BBB',borderRadius: 20,textAlign: 'center', border: '15px solid #6699CC', margin: 5}, bodyStyle: {background: '#BBB', lineHeight: '120px'}}], 
+                                                            defaultMargins: 10, 
+                                                            flex: 1, 
+                                                            split: true,
+                                                            style: { color: '#000',backgroundColor:'#FFF',borderRadius: 20,textAlign: 'center', border: '5px solid', margin: 5},
+                            
+                            
+                                                        };
+                                                    }
+    //                                           
+                                                Ext.getCmp('resultPanel').add(dataItems);
+                                                Ext.getBody().unmask();
+                                                }
+                                        
+                                        });
+                                    }
                                 }
                                 },
-                                { text: 'Cancel' },
+                                { text: 'Cancel', handler: function() {this.up('form').getForm().reset();} },
                             ]
 
                         }]
@@ -263,8 +185,7 @@
                     tabIndex: 2,
                     title: 'Результат',
                     id: 'resultPanel',
-                    iconCls: 'user',
-                    html: 'Here will be some results'
+                    iconCls: 'user'
                 }]
             });
         } // launch

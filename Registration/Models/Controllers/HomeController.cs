@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Text;
 using System.Security;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -28,10 +29,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
-            {
-                return RedirectToAction("Register");
-            }
+            //if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            //{
+            //    return RedirectToAction("Register");
+            //}
 
             return View();
         }
@@ -40,8 +41,9 @@ namespace System.Web.Security
             return View("History");
         }
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase FileUpload)
+        public ActionResult Upload()
         {
+            HttpPostedFileBase FileUpload = Request.Files["file"];
             if (FileUpload != null && FileUpload.ContentLength > 0)
             {
                 try
@@ -125,7 +127,7 @@ namespace System.Web.Security
         {
             var database = new Database();
             var arr = database.Compressor.ToArray();
-            return Json(arr, JsonRequestBehavior.AllowGet);
+            return Json(new {result = arr}, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -137,7 +139,7 @@ namespace System.Web.Security
             string Feedback = string.Empty;
             string line = string.Empty;
 
-            var strArray = new string[11];
+            string [] strArray;
             // work out where we should split on comma, but not in a sentence
             Regex r = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //Set the filename in to our stream
