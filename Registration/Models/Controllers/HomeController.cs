@@ -28,16 +28,16 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            //if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
-            //{
-            //    return RedirectToAction("Register");
-            //}
+            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            {
+                return RedirectToAction("Register");
+            }
 
             return View();
         }
         public ActionResult History()
         {
-            return View();
+            return View("History");
         }
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase FileUpload)
@@ -72,25 +72,27 @@ namespace System.Web.Security
         {
             try
             {
-                var database = new Database();
-                var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
-                if (userLine.Password == user.Password)
-                {
-                    var hash = Convert.ToBase64String(
-                          System.Security.Cryptography.MD5.Create()
-                          .ComputeHash(Encoding.UTF8.GetBytes(userLine.Password))
-                        );
-
-
-                    var AuthCookie = new HttpCookie("auth_test")
+               
+                    var database = new Database();
+                    var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
+                    if (userLine.Password == user.Password)
                     {
-                        Value = hash,
-                        Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
-                    };
-                    user.isAuth = true;
-                    HttpContext.Response.Cookies.Set(AuthCookie);
-                }
-                return Json(new { success = true });
+                        var hash = Convert.ToBase64String(
+                              System.Security.Cryptography.MD5.Create()
+                              .ComputeHash(Encoding.UTF8.GetBytes(userLine.Password))
+                            );
+
+
+                        var AuthCookie = new HttpCookie("auth_test")
+                        {
+                            Value = hash,
+                            Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
+                        };
+                        user.isAuth = true;
+                        HttpContext.Response.Cookies.Set(AuthCookie);
+                    }
+                    return Json(new { success = true });
+                
             }
             catch (InvalidCastException e)
             {
@@ -118,10 +120,12 @@ namespace System.Web.Security
             return null;
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult ConvertDataToCSV(ViewModel model)
         {
-            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            var database = new Database();
+            var arr = database.Compressor.ToArray();
+            return Json(arr, JsonRequestBehavior.AllowGet);
         }
 
 

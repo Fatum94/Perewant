@@ -151,7 +151,10 @@
                         {
                             xtype: 'button',
                             margin: '20',
-                            text: 'Переглянути історію'
+                            text: 'Переглянути історію',
+                            handler: function () {
+                                location.href = "/Home/History"
+                            }
                         },
                         {
                             xtype: 'form',
@@ -265,5 +268,5 @@
                 }]
             });
         } // launch
-    });        // application()
+    });           // application()
 </script>
