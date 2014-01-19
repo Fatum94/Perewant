@@ -29,10 +29,8 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            //if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
-            //{
-            //    return RedirectToAction("Register");
-            //}
+            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null) 
+                return RedirectToAction("Register");
 
             return View();
         }
@@ -65,9 +63,9 @@ namespace System.Web.Security
         }
         public ActionResult Registration()
         {
-            ViewData["Message"] = "Register Here!";
-            var model = new User();
-            return View("Registration", model);
+            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+                return RedirectToAction("Register");
+            return View("Registration");
         }
         [HttpPost]
         public ActionResult WatchDB(User user)
@@ -87,13 +85,13 @@ namespace System.Web.Security
 
                         var AuthCookie = new HttpCookie("auth_test")
                         {
-                            Value = hash,
+                            Value = hash + "id" + userLine.Id,
                             Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
                         };
                         user.isAuth = true;
                         HttpContext.Response.Cookies.Set(AuthCookie);
                     }
-                    return Json(new { success = true });
+                    return Json(new { success = true, url = "/" });
                 
             }
             catch (InvalidCastException e)
@@ -103,9 +101,24 @@ namespace System.Web.Security
             return Json(new { success = true });
         }
 
+        [HttpGet]
+        public ActionResult Register () {
+            return View();
+        }
+        [HttpPost]
         public ActionResult Register(User user)
         {
-            return View();
+            try
+            {
+                var database = new Database();
+                user.isAuth = true;
+                database.Users.Add(user);
+                database.SaveChanges();
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex) {
+                return Json( new {error = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
         }
         public ActionResult LogOut()
         {
@@ -115,10 +128,8 @@ namespace System.Web.Security
             return RedirectToAction("Register");
         }
 
-        public ViewDataDictionary getFromTable(User user)
+        public ViewDataDictionary GetFromTable(User user)
         {
-            
-
             return null;
         }
 
@@ -129,7 +140,14 @@ namespace System.Web.Security
             var arr = database.Compressor.ToArray();
             return Json(new {result = arr}, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public ActionResult GetUserName(int id)
+        {
+            var database = new Database();
+            var userName = database.Users.Where(u => u.Id == id);
 
+            return Json(new {response = userName}, JsonRequestBehavior.AllowGet);
+        }
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)
         {

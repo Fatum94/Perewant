@@ -31,10 +31,11 @@
                     form.submit({
                         method: 'POST',
                         url: '/Home/WatchDB',
-                        success: function () {
+                        success: function (resp, result) {
+                            location.href = result.result.url;
                             Ext.getBody().unmask();
                         },
-                        failure: function(response) {
+                        failure: function (response) {
                             Ext.getBody().unmask();
                         }
                     });

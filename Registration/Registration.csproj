@@ -123,6 +123,8 @@
     </Compile>
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="UI\scripts\app.js" />
+    <Content Include="UI\scripts\getUserRole.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
