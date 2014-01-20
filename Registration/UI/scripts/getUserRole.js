@@ -13,7 +13,7 @@
                 id: view.getUserId()
             },
             success: function(response, res) {
-                view.userRole = JSON.parse(response.responseText).response[0].Name;
+                view.userRole = JSON.parse(response.responseText).response;
                 runApp();
             }
         });

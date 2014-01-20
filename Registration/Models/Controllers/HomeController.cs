@@ -29,10 +29,10 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null) 
-                return RedirectToAction("Register");
+            if (Request.Cookies["auth_test"] != null && Request.Cookies["auth_test"].Value != null && Session["userName"] != null)
+                return View();
 
-            return View();
+            return RedirectToAction("Register");
         }
         public ActionResult History()
         {
@@ -90,6 +90,7 @@ namespace System.Web.Security
                         };
                         user.isAuth = true;
                         HttpContext.Response.Cookies.Set(AuthCookie);
+                        Session["userName"] = userLine.Name;
                     }
                     return Json(new { success = true, url = "/" });
                 
@@ -125,6 +126,7 @@ namespace System.Web.Security
             HttpCookie myCookie = new HttpCookie("auth_test");
             myCookie.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(myCookie);
+            Session.Clear();
             return RedirectToAction("Register");
         }
 
@@ -143,10 +145,8 @@ namespace System.Web.Security
         [HttpGet]
         public ActionResult GetUserName(int id)
         {
-            var database = new Database();
-            var userName = database.Users.Where(u => u.Id == id);
-
-            return Json(new {response = userName}, JsonRequestBehavior.AllowGet);
+            var name = (string) Session["userName"];
+            return Json(new { response = name }, JsonRequestBehavior.AllowGet);
         }
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)

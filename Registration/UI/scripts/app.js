@@ -37,6 +37,14 @@
                             this.buildButtons()[0],
                             this.buildButtons()[1],
                             {
+                                xtype: 'button',
+                                margin: '20',
+                                text: 'Logout',
+                                handler: function() {
+                                    location.href = "/Home/LogOut";
+                                }
+                            },
+                            {
                                 xtype: 'form',
                                 bodyStyle: 'background: rgb(123, 105, 134)',
                                 padding: '10',

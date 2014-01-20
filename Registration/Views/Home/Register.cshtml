@@ -12,7 +12,9 @@
     <script type="text/javascript">
         Ext.create('Ext.form.Panel', {
             width: 300,
-            height: 100,
+            height: 150,
+            bodyStyle: 'padding: 20px;',
+            style: 'margin: 40px auto; display: block;',
             defaultType: 'textfield',
             items: [
                 {
@@ -22,10 +24,8 @@
                     name: 'Password',
                     inputType: 'password',
                     fieldLabel: 'Password'
-                }
-            ],
-            buttons: [
-                { text: 'Login', handler: function () {
+                },
+                { xtype: 'button', text: 'Login', handler: function () {
                     var form = this.up('form').getForm();
                     Ext.getBody().mask('Please wait...');
                     form.submit({
@@ -41,7 +41,7 @@
                     });
                 }
                 },
-                { text: 'Cancel', handler: function () { this.up('form').getForm().reset(); } }
+                { xtype: 'button', text: 'Cancel', handler: function () { this.up('form').getForm().reset(); } }
             ],
             renderTo: Ext.getBody()
         });
