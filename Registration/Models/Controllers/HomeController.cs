@@ -168,9 +168,47 @@ namespace System.Web.Security
 
                     //add our current value to our data row
                     strArray = r.Split(line);
+                    var PressIn = strArray[0];
+                    var PressOut = strArray[1];
+                    var Performance = strArray[2];
+                    var Drive = strArray[3];
+                    var Power = strArray[4];
+                    var DegreesOfPressure = strArray[5];
+                    var NumberOfCylinders = strArray[6];
+                    var Bore = strArray[7];
+                    var LengthOfStroke = strArray[8];
+                    var SpeedOfRotation = strArray[9];
+                    var fromDB =
+                        database.Compressor.Where(c=>
+                            c.PressIn ==
+                            PressIn && c.PressOut ==
+                                    PressOut && c.Performance ==
+                                        Performance && c.Drive ==
+                                            Drive && c.Power ==
+                                                Power && c.DegreesOfPressure ==
+                                                    DegreesOfPressure && c.NumberOfCylinders ==
+                                                        NumberOfCylinders && c.Bore ==
+                                                            Bore && c.LengthOfStroke ==
+                                                                LengthOfStroke && c.SpeedOfRotation == SpeedOfRotation).FirstOrDefault();
+                    if (fromDB == null)
+                    {
+                        database.Compressor.Add(new Kompressor
+                        {
+                            PressIn = strArray[0],
+                            PressOut = strArray[1],
+                            Performance = strArray[2],
+                            Drive = strArray[3],
+                            Power = strArray[4],
+                            DegreesOfPressure = strArray[5],
+                            NumberOfCylinders = strArray[6],
+                            Bore = strArray[7],
+                            LengthOfStroke = strArray[8],
+                            SpeedOfRotation = strArray[9]
+                        });
+                        database.SaveChanges();
+                    }
+                    fromDB = null;
 
-                    database.Compressor.Add(new Kompressor { PressIn = strArray[0], PressOut = strArray[1], Performance = strArray[2], Drive = strArray[3], Power = strArray[4], DegreesOfPressure = strArray[5], NumberOfCylinders = strArray[6], Bore = strArray[7], LengthOfStroke = strArray[8], SpeedOfRotation = strArray[9]});
-                    database.SaveChanges();
                 }
             }
 
