@@ -29,13 +29,18 @@ namespace System.Web.Security
 
         public ActionResult Index(User user)
         {
-            if (Request.Cookies["auth_test"] != null && Request.Cookies["auth_test"].Value != null && Session["userName"] != null)
+            if (Request.Cookies["auth_test"] != null && Request.Cookies["auth_test"].Value != null && Session["userRole"] != null)
                 return View();
 
             return RedirectToAction("Register");
         }
         public ActionResult History()
         {
+            var database = new Database();
+            var dateTime = DateTime.Now;
+            string Uname = (string)Session["userName"];
+            database.Histories.Add(new History { Uname = "oleh", LastActivity = dateTime.ToLongDateString() + dateTime.ToLongTimeString(), ActivityType = "Watched history" });
+            database.SaveChanges();
             return View("History");
         }
         [HttpPost]
@@ -57,14 +62,19 @@ namespace System.Web.Security
         }
         public ActionResult SelectCompressor(ViewModel model)
         {
+
             var database = new Database();
+            var dateTime = DateTime.Now;
+            string Uname = (string)Session["userName"];
+            database.Histories.Add(new History { Uname = "oleh", LastActivity = dateTime.ToLongDateString() + dateTime.ToLongTimeString(), ActivityType = "Selected compressor" });
+            database.SaveChanges();
             var compressor = database.Compressor.Where(c => c.PressIn == model.First.PressIn);
             return Json(new {resp = compressor, success = true}, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Registration()
         {
-            if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
-                return RedirectToAction("Register");
+            //if (Request.Cookies["auth_test"] == null || Request.Cookies["auth_test"].Value == null)
+            //    return RedirectToAction("Register");
             return View("Registration");
         }
         [HttpPost]
@@ -74,6 +84,10 @@ namespace System.Web.Security
             {
                
                     var database = new Database();
+                    var dateTime = DateTime.Now;
+                    string Uname = (string)Session["userName"];
+                    database.Histories.Add(new History { Uname = "oleh", LastActivity = dateTime.ToLongDateString() + dateTime.ToLongTimeString(), ActivityType = "Logged in" });
+                    database.SaveChanges();
                     var userLine = database.Users.Where(u => u.Name == user.Name).FirstOrDefault();
                     if (userLine.Password == user.Password)
                     {
@@ -90,6 +104,7 @@ namespace System.Web.Security
                         };
                         user.isAuth = true;
                         HttpContext.Response.Cookies.Set(AuthCookie);
+                        Session["userRole"] = userLine.Role;
                         Session["userName"] = userLine.Name;
                     }
                     return Json(new { success = true, url = "/" });
@@ -124,6 +139,11 @@ namespace System.Web.Security
         public ActionResult LogOut()
         {
             HttpCookie myCookie = new HttpCookie("auth_test");
+            var database = new Database();
+            var dateTime = DateTime.Now;
+            string Uname = (string)Session["userName"];
+            database.Histories.Add(new History { Uname = "oleh", LastActivity = dateTime.ToLongDateString() + dateTime.ToLongTimeString(), ActivityType = "Logged Out" });
+            database.SaveChanges();
             myCookie.Expires = DateTime.Now.AddDays(-1d);
             Response.Cookies.Add(myCookie);
             Session.Clear();
@@ -139,20 +159,23 @@ namespace System.Web.Security
         public ActionResult ConvertDataToCSV(ViewModel model)
         {
             var database = new Database();
-            var arr = database.Compressor.ToArray();
+            var arr = database.Histories.ToArray();
             return Json(new {result = arr}, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public ActionResult GetUserName(int id)
+        public ActionResult GetUserRole(int id)
         {
-            var name = (string) Session["userName"];
+            var name = (string) Session["userRole"];
             return Json(new { response = name }, JsonRequestBehavior.AllowGet);
         }
 
         private void ProcessCSV(HttpPostedFileBase FileUpload)
         {
             var database = new Database();
-
+            var dateTime = DateTime.Now;
+            string Uname = (string)Session["userName"];
+            database.Histories.Add(new History { Uname = "oleh", LastActivity = dateTime.ToLongDateString() + dateTime.ToLongTimeString(), ActivityType = "Uploaded file to database" });
+            database.SaveChanges();
             //Set up our variables
             string Feedback = string.Empty;
             string line = string.Empty;

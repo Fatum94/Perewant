@@ -9,7 +9,7 @@ function request(url,renderToBlock,data){
             var store = Ext.create('Ext.data.Store', {
 
                 storeId: 'simpsonsStore',
-                fields: ['PressIn', 'PressOut', 'Performance', 'Drive', 'Power', 'DegreesOfPressure', 'NumberOfCylinders', 'Bore', 'LengthOfStroke', 'SpeedOfRotation'],
+                fields: ['Uname', 'LastActivity', 'ActivityType'],
                 data: response.result,
                 proxy: {
                     type: 'ajax',
@@ -32,17 +32,9 @@ function request(url,renderToBlock,data){
                 width: '100%',
                 columns: [
 
-                { header: 'Press Out', dataIndex: 'PressOut', width: 100 },
-                { header: 'Press In', dataIndex: 'PressIn', flex: 1 },
-                { header: 'Performance', dataIndex: 'Performance', flex: 1 },
-                { header: 'Drive', dataIndex: 'Drive', flex: 1 },
-                { header: 'Power', dataIndex: 'Power', flex: 1 },
-                { header: 'Degrees Of Pressure', dataIndex: 'DegreesOfPressure', flex: 1 },
-                { header: 'Number Of Cylinders', dataIndex: 'NumberOfCylinders', flex: 1 },
-                { header: 'Bore', dataIndex: 'Bore', flex: 1 },
-                { header: 'Length Of Stroke', dataIndex: 'LengthOfStroke', flex: 1 },
-                { header: 'Speed Of Rotation', dataIndex: 'SpeedOfRotation', flex: 1 }
-
+                { header: 'USER NAME', dataIndex: 'Uname', flex: 1 },
+                { header: 'Activity time', dataIndex: 'LastActivity', flex: 1 },
+                { header: 'Type of activity', dataIndex: 'ActivityType', flex: 1 }
             ]
 
             });

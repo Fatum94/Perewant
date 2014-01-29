@@ -7,7 +7,7 @@
     doRequest: function() {
         var view = this;
         Ext.Ajax.request({
-            url: '/Home/GetUserName',
+            url: '/Home/GetUserRole',
             method: 'GET',
             params: {
                 id: view.getUserId()

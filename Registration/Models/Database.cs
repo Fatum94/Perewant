@@ -12,6 +12,8 @@ namespace Registration.Models
         public Database() : base("Database") { }
         public DbSet<User> Users { get; set; }
         public DbSet<Kompressor> Compressor { get; set; }
+        public DbSet<Sverdlovuna> Sverdlovunas { get; set; }
+        public DbSet<History> Histories { get; set; }
     }
 
     public class DbInit : DropCreateDatabaseIfModelChanges<Database>

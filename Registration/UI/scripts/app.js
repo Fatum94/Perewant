@@ -2,7 +2,7 @@
     Ext.application({
         name: 'MyApp',
         buildButtons: function() {
-            if (getRole.userRole == 'oleh') {
+            if (getRole.userRole == 'a') {
                 return [
                     {
                         xtype: 'button',
